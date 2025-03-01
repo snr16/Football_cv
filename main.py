@@ -11,8 +11,11 @@ def main():
 
     # Get tracker objects
     tracks = tracker.get_object_tracks(video_frames,
-                                       read_from_stub=True,
-                                       stub_path='stubs/track_stubs.pkl')
+                              read_from_stub=True,
+                                      stub_path='stubs/track_stubs.pkl')
+    
+    # Draw annotaions
+    video_frames = tracker.draw_annotations(video_frames,tracks)
 
     #save the video file
     save_video(video_frames,'output_videos/output_video.mp4')
