@@ -3,7 +3,7 @@ from ultralytics import YOLO
 
 model = YOLO('models/best.pt')
 
-results = model.predict(source='input_video/08fd33_4.mp4',save=True)
+results = model.predict(source='input_videos/bundesliga.mp4',save=True)
 print(results[0])
 print("*"*30)
 
