@@ -9,6 +9,11 @@ def main():
     # Initialize tracker
     tracker = Tracker("models/best.pt")
 
+    # Get tracker objects
+    tracks = tracker.get_object_tracks(video_frames,
+                                       read_from_stub=True,
+                                       stub_path='stubs/track_stubs.pkl')
+
     #save the video file
     save_video(video_frames,'output_videos/output_video.mp4')
 
