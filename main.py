@@ -1,5 +1,7 @@
 from utils import read_video,save_video
 from trackers import Tracker
+import cv2
+from team_assigner import TeamAssinger
 
 def main():
    
@@ -13,9 +15,23 @@ def main():
     tracks = tracker.get_object_tracks(video_frames,
                               read_from_stub=True,
                                       stub_path='stubs/track_stubs.pkl')
+    # Assign player Teams
+    team_assigner = TeamAssinger()
+    team_assigner.assign_team_color(video_frames[0],
+                                    tracks['players'][0])
     
+    for frame_num,player_track in enumerate(tracks['players']):
+        for player_id,track in player_track.items():
+            player_team_id = team_assigner.assign_player_team(video_frames[frame_num],
+                                                              player_id,
+                                                              track['bbox'])
+            player_color = team_assigner.team_colors[player_team_id]
+            tracks['players'][frame_num][player_id]['team']=player_team_id
+            tracks['players'][frame_num][player_id]['team_color']=player_color
+
     # Draw annotaions
     video_frames = tracker.draw_annotations(video_frames,tracks)
+
 
     #save the video file
     save_video(video_frames,'output_videos/output_video.mp4')

@@ -13,7 +13,8 @@ dependencies = [
     "ultralytics (>=8.3.81,<9.0.0)",
     "roboflow (>=1.1.54,<2.0.0)",
     "importlib-resources (==6.5.2)",
-    "supervision (>=0.25.1,<0.26.0) ; python_version >= \"3.9\" and python_version < \"4.0\""
+    "supervision (>=0.25.1,<0.26.0) ; python_version >= \"3.9\" and python_version < \"4.0\"",
+    "scikit-learn (>=1.6.1,<2.0.0)"
 ]
 
 
