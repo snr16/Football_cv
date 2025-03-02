@@ -16,7 +16,7 @@ import cv2
 def save_video(frames, output_path):
     height, width, _ = frames[0].shape
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_path, fourcc, 30.0, (width, height))
+    out = cv2.VideoWriter(output_path, fourcc, 24.0, (width, height))
     for frame in frames:
         out.write(frame)
 

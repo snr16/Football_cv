@@ -4,15 +4,30 @@ import pickle
 import os
 import sys
 sys.path.append('../')
-from utils import get_center_bbox,get_bbox_width
+from utils import get_center_bbox,get_bbox_width,get_foot_position
 import cv2
 import numpy as np
 import pandas as pd
+
 
 class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
+
+    def add_position_to_tracks(self,tracks):
+        for obj_name,obj in tracks.items():
+                for frame_num,frame in enumerate(obj):
+                    if obj_name!='ball':
+                        for track_id,track_info in frame.items():
+                            bbox = track_info['bbox']
+                            position = get_foot_position(bbox)
+                            tracks[obj_name][frame_num][track_id]['position'] = position
+                    else:
+                        bbox = frame['bbox'] 
+                        position = get_center_bbox(bbox)
+                        tracks[obj_name][frame_num]['position'] = position
+                
 
     def interpolate_ball_positions(self,ball_positions):
         ball_positions = [x.get('bbox',[]) for x in ball_positions]
@@ -176,7 +191,7 @@ class Tracker:
         team_2 = 1-team_1
 
         cv2.putText(frame,f"Team 1 Ball Control: {team_1*100:.2f}%",(1400,900),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
-        cv2.putText(frame,f"Team 1 Ball Control: {team_2*100:.2f}%",(1400,950),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
+        cv2.putText(frame,f"Team 2 Ball Control: {team_2*100:.2f}%",(1400,950),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,0),3)
 
         return frame
 
