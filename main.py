@@ -5,6 +5,7 @@ from team_assigner import TeamAssinger
 from player_ball_assigner import PlayerBallAssigner
 import numpy as np
 from camera_movement_estimator import CameraMovementEstimator
+from view_transformer import ViewTransformer
 
 def main():
    
@@ -32,10 +33,15 @@ def main():
     camera_movement_per_frame = camera_movement_estimator.get_camera_movement(video_frames,
                                                 True,
                                                 'stubs/camera_movement_stub.pkl')
+    
 
     # Adjust player camera movement
     camera_movement_estimator.adjust_position_to_tracks(tracks,camera_movement_per_frame)
-    
+
+    # Perspective homography or transformation
+    view_transformer = ViewTransformer()
+    tracks = view_transformer.add_transformed_position_to_tracks(tracks)
+
 
     # Assign player Teams
     team_assigner = TeamAssinger()
