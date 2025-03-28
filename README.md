@@ -138,10 +138,9 @@ The system uses hardcoded field calibration for accurate measurements:
    - Width: 68 meters (standard football field width)
    - These dimensions are used for all measurements
 
-2. **Perspective Transform**:
-   - Uses predefined field corners
-   - Automatically validates transformed coordinates
-   - Ensures measurements are within field bounds
+1. Visit the [Roboflow YOLOv8 Model Zoo](https://roboflow.com/)
+2. Download the required models (`yolo8x.pt`, `best.pt`, `last.pt`)
+3. Place the downloaded models in the `models/` directory
 
 3. **Validation**:
    - Checks if points are inside the field

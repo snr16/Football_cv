@@ -40,7 +40,7 @@ input_videos/*
 output_videos/*
 !output_videos/.gitkeep
 !demo/*.gif
-models/*
+!models/*
 !models/.gitkeep
 stubs/*
 !stubs/.gitkeep
@@ -59,7 +59,7 @@ calibration_results/*
 *.pkl
 *.h5
 *.hdf5
-*.pt
+!*.pt
 *.pth
 *.onnx
 *.tflite
@@ -96,4 +96,6 @@ coverage.xml
 poetry.lock
 
 # Git LFS
-.git/lfs/ 
+.git/lfs/
+
+football-players-detection-1/
