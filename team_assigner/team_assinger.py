@@ -7,6 +7,7 @@ class TeamAssinger():
         self.kmeans = None
         self.team_colors={}
         self.player_team_dict = {}
+        self.player_team_history = {}
 
     def get_clustering_model(self,image):
         #reshape the image
@@ -47,23 +48,36 @@ class TeamAssinger():
             player_color = self.get_player_color(frame,player['bbox'])
             player_colors.append(player_color)
 
-        kmeans = KMeans(n_clusters=2,init='k-means++',n_init=10,random_state=42)
+        kmeans = KMeans(n_clusters=2,init='k-means++',n_init=5,random_state=42)
         kmeans.fit(player_colors)
 
         self.kmeans = kmeans
         self.team_colors[1]=kmeans.cluster_centers_[0]
         self.team_colors[2]=kmeans.cluster_centers_[1]
 
-    def assign_player_team(self,frame,player_id,bbox):
-        if player_id in self.player_team_dict:
-            return self.player_team_dict[player_id]
-        
-        player_color = self.get_player_color(frame,bbox)
-        team_id = self.kmeans.predict(player_color.reshape(1,-1))[0] + 1
+    def assign_player_team(self, frame, player_id, bbox):
+        player_color = self.get_player_color(frame, bbox)
+        predicted_team_id = self.kmeans.predict(player_color.reshape(1, -1))[0] + 1
 
-        if player_id == 112:
-            team_id = 1
-        self.player_team_dict[player_id]=team_id
+        if player_id == 86:
+            predicted_team_id = 2  # Special case for player 86 goal keeper
 
-        return team_id
+        # Store team history for last 10 frames
+        if player_id not in self.player_team_history:
+            self.player_team_history[player_id] = []  # Initialize list
+
+        self.player_team_history[player_id].append(predicted_team_id)
+
+        # Keep only last 10 frames of history
+        if len(self.player_team_history[player_id]) > 10:
+            self.player_team_history[player_id].pop(0)
+
+        # Check if the last 10 frames had the same team_id
+        if len(set(self.player_team_history[player_id])) == 1:  
+            self.player_team_dict[player_id] = self.player_team_history[player_id][0]  # Fix team_id
+        else:
+            self.player_team_dict[player_id] = predicted_team_id
+
+        return self.player_team_dict[player_id]
+
 

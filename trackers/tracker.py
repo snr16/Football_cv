@@ -4,7 +4,7 @@ import pickle
 import os
 import sys
 sys.path.append('../')
-from utils import get_center_bbox,get_bbox_width,get_foot_position
+from utils import get_center_bbox,get_bbox_width,get_foot_position,measure_bbox_distances
 import cv2
 import numpy as np
 import pandas as pd
@@ -14,6 +14,47 @@ class Tracker:
     def __init__(self,model_path):
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
+
+    def adjust_tracks(self, tracks):
+        for obj_name, obj in tracks.items():
+            if obj_name == 'players':
+                for frame_num, frame in enumerate(obj[1:], 1):
+                    # Consider bounding boxes from the last 30 frames (or as many as available)
+                    min_frame = max(0, frame_num - 30)
+                    prev_tracks = obj[min_frame:frame_num]  # Last 30 frames
+
+                    prev_track_ids = []
+                    prev_track_bboxes = []
+
+                    # Collect all previous track IDs and bounding boxes
+                    for prev_frame in prev_tracks:
+                        for prev_track_id, prev_track_info in prev_frame.items():
+                            prev_track_ids.append(prev_track_id)
+                            prev_track_bboxes.append(prev_track_info['bbox'])
+
+                    current_track = frame
+
+                    for track_id in list(current_track.keys()):  # Iterate over a copy of keys
+                        track_info = current_track[track_id]
+                        if track_id is not None and track_id not in prev_track_ids:
+                            current_track_bbox = track_info['bbox']
+                            min_distance = float('inf')
+                            min_distance_track_id = None
+
+                            # Compare with all collected previous bounding boxes
+                            for prev_track_id, prev_track_bbox in zip(prev_track_ids, prev_track_bboxes):
+                                distance = measure_bbox_distances(current_track_bbox, prev_track_bbox)
+                                if distance < min_distance:
+                                    min_distance = distance
+                                    min_distance_track_id = prev_track_id
+
+                            if min_distance_track_id is not None and min_distance_track_id not in current_track:
+                                tracks[obj_name][frame_num][min_distance_track_id] = {'bbox': track_info['bbox']}
+                                tracks[obj_name][frame_num].pop(track_id)  # remove after iterating over keys
+
+        return tracks
+
+
 
     def add_position_to_tracks(self,tracks):
         for obj_name,obj in tracks.items():

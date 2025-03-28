@@ -13,3 +13,6 @@ def measure_xy_distance(p1,p2):
 
 def get_foot_position(bbox):
     return ((bbox[0]+bbox[2])/2,(bbox[3]))
+
+def measure_bbox_distances(bbox1,bbox2):
+    return ((bbox1[0]-bbox2[0])**2+(bbox1[1]-bbox2[1])**2)**0.5
