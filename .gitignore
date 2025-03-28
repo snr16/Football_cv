@@ -98,4 +98,4 @@ poetry.lock
 # Git LFS
 .git/lfs/
 
-football-players-detection-1/
+training/football-players-detection-1/
