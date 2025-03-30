@@ -102,12 +102,17 @@ sudo apt-get install ffmpeg
 
 1. Place your input video in the `input_videos/` directory
 
-2. Run the analysis:
+2. Incase, you want to fine tune on your own,visit the [Roboflow YOLOv8 Model Zoo](https://roboflow.com/)
+   - Download the data using the roboflow using copy code option
+   - Train(Finetune) the YOLOv8 model using roboflow data for around 100 epochs
+   - Download the model checkpoint `yolo8x.pt`
+
+3. Run the analysis:
 ```bash
 python main.py
 ```
 
-3. The system will:
+4. The system will:
    - Process the video using hardcoded field calibration
    - Track players and ball
    - Calculate speeds and distances
@@ -138,9 +143,8 @@ The system uses hardcoded field calibration for accurate measurements:
    - Width: 68 meters (standard football field width)
    - These dimensions are used for all measurements
 
-1. Visit the [Roboflow YOLOv8 Model Zoo](https://roboflow.com/)
-2. Download the required models (`yolo8x.pt`, `best.pt`, `last.pt`)
-3. Place the downloaded models in the `models/` directory
+1. Download the required models (`yolo8x.pt`, `best.pt`, `last.pt`)
+2. Place the downloaded models in the `models/` directory
 
 3. **Validation**:
    - Checks if points are inside the field
