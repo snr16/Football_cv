@@ -13,7 +13,6 @@ Sample output showing:
 - Speed and distance measurements
 - Camera movement visualization
 - Ball possession tracking
-- Player trajectories and heatmaps
 
 ## Features
 
