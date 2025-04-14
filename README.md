@@ -7,9 +7,9 @@ A computer vision project that analyzes football/soccer videos to track players,
 ![Football Analysis Demo](demo/output_demo.gif)
 
 Sample output showing:
-- Player detection and tracking (colored boxes)
-- Ball tracking (white box)
-- Team classification (red vs blue boxes)
+- Player detection and tracking
+- Ball tracking
+- Team classification
 - Speed and distance measurements
 - Camera movement visualization
 - Ball possession tracking
@@ -29,31 +29,6 @@ Sample output showing:
 - **Perspective Transform**: Convert camera view to top-down perspective
   - Hardcoded field dimensions (23.32m x 68m)
   - Automatic field bounds validation
-- **Visual Annotations**: Overlay of tracking data and analytics on the video
-- **Additional Visualizations**:
-  - Player trajectories
-  - Heatmaps
-  - Field zones (defensive, midfield, attacking)
-
-## Project Structure
-
-```
-football_cv_project/
-├── input_videos/          # Input video files
-├── output_videos/         # Processed output videos
-├── models/               # YOLOv8 model files
-├── stubs/                # Cached data for faster processing
-├── calibration_results/  # Field transformation visualizations
-├── camera_movement_estimator/  # Camera motion tracking
-├── player_ball_assigner/      # Ball possession detection
-├── speed_and_distance_estimator/  # Speed/distance calculations
-├── team_assigner/        # Team classification
-├── trackers/            # Object tracking implementation
-├── utils/               # Utility functions
-├── view_transformer/    # Perspective transformation
-├── main.py             # Main execution script
-└── README.md           # Project documentation
-```
 
 ## Requirements
 
